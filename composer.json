@@ -1,0 +1,16 @@
+{
+  "name": "jbbx2016/sms-gateway",
+  "description": "SMS Gateway used in SchoolLink project",
+  "minimum-stability": "dev",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Johannes Beyer Bruvik"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "JBBx2016\\SMSGateway": "src/"
+    }
+  }
+}
