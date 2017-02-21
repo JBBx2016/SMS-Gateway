@@ -9,13 +9,13 @@
 namespace JBBx2016\SMSGateway;
 
 
+use JBBx2016\SMSGateway\Common\Exceptions\Exception;
 use JBBx2016\SMSGateway\Common\Exceptions\NoGatewayFoundException;
 use JBBx2016\SMSGateway\Common\Gateway\Gateway;
 use JBBx2016\SMSGateway\Common\Gateway\GatewaySendMessageResponse;
 use JBBx2016\SMSGateway\Common\Payload;
 use JBBx2016\SMSGateway\Common\PhoneNumber;
 use JBBx2016\SMSGateway\Common\Sender;
-use JBBx2016\SMSGateway\Payloads\SMSPayload;
 
 class SMSGatewayApi
 {
@@ -31,7 +31,7 @@ class SMSGatewayApi
      * @param Sender $Sender
      * @param Payload $Payload
      * @return GatewaySendMessageResponse
-     * @throws NoGatewayFoundException
+     * @throws Exception
      */
     public function SendMessage(Sender $Sender, Payload $Payload)
     {

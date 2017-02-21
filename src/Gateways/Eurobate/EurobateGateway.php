@@ -19,6 +19,7 @@ use JBBx2016\SMSGateway\Common\PhoneNumberValidator\Conditions\PhoneNumberLength
 use JBBx2016\SMSGateway\Common\PhoneNumberValidator\Conditions\PhoneNumberStartsWithCondition;
 use JBBx2016\SMSGateway\Common\PhoneNumberValidator\PhoneNumberGatewayValidator;
 use JBBx2016\SMSGateway\Common\Sender;
+use JBBx2016\SMSGateway\Gateways\Eurobate\Exceptions\IPNotAuthorizedEurobateException;
 use JBBx2016\SMSGateway\Payloads\SMSPayload;
 
 class EurobateGateway extends Gateway
@@ -50,6 +51,7 @@ class EurobateGateway extends Gateway
      * @param Sender $Sender
      * @param Payload $Payload
      * @return GatewaySendMessageResponse
+     * @throws IPNotAuthorizedEurobateException
      * @throws OnlySMSPayloadAllowedException
      */
     public function SendMessage(Sender $Sender, Payload $Payload)
@@ -72,9 +74,14 @@ class EurobateGateway extends Gateway
             'batch' => 0,
             'land' => 47
         ));
-
         $result = curl_exec($curl);
         curl_close($curl);
+
+
+
+        if (strpos($result, "IP ikke tillatt") !== false)
+            throw new IPNotAuthorizedEurobateException();
+
 
         return new EurobateSendMessageResponse($result);
     }
