@@ -10,7 +10,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "JBBx2016\\SMSGateway": "src/"
+      "JBBx2016\\SMSGateway\\": "src/"
     }
   }
 }
