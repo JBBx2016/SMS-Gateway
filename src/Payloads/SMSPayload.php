@@ -8,13 +8,11 @@
 
 namespace JBBx2016\SMSGateway\Payloads;
 
+use JBBx2016\SMSGateway\Common\Payload;
 use JBBx2016\SMSGateway\Common\PhoneNumber;
 
-class SMS
+class SMSPayload extends Payload
 {
-    /** @var PhoneNumber */
-    protected $PhoneNumber;
-
     /** @var  string */
     protected $Text;
 
@@ -22,14 +20,6 @@ class SMS
     {
         $this->PhoneNumber = $phoneNumber;
         $this->Text = $Text;
-    }
-
-    /**
-     * @return PhoneNumber
-     */
-    public function GetPhoneNumber()
-    {
-        return $this->PhoneNumber;
     }
 
     /**

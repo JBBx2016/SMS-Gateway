@@ -9,9 +9,10 @@
 namespace JBBx2016\SMSGateway\Common\Gateway;
 
 
+use JBBx2016\SMSGateway\Common\Payload;
 use JBBx2016\SMSGateway\Common\PhoneNumber;
 use JBBx2016\SMSGateway\Common\Sender;
-use JBBx2016\SMSGateway\Payloads\SMS;
+use JBBx2016\SMSGateway\Payloads\SMSPayload;
 
 abstract class Gateway
 {
@@ -19,8 +20,8 @@ abstract class Gateway
 
     /**
      * @param Sender $Sender
-     * @param SMS $SMS
+     * @param Payload $Payload
      * @return GatewaySendMessageResponse
      */
-    abstract public function SendMessage(Sender $Sender, SMS $SMS);
+    abstract public function SendMessage(Sender $Sender, Payload $Payload);
 }

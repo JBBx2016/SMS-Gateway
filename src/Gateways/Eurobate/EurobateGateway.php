@@ -9,15 +9,17 @@
 namespace JBBx2016\SMSGateway\Gateways\Eurobate;
 
 use JBBx2016\SMSGateway\Common\CountryCodes;
+use JBBx2016\SMSGateway\Common\Exceptions\OnlySMSPayloadAllowedException;
 use JBBx2016\SMSGateway\Common\Gateway\Gateway;
 use JBBx2016\SMSGateway\Common\Gateway\GatewaySendMessageResponse;
+use JBBx2016\SMSGateway\Common\Payload;
 use JBBx2016\SMSGateway\Common\PhoneNumber;
 use JBBx2016\SMSGateway\Common\PhoneNumberValidator\CountryCodeCondition;
 use JBBx2016\SMSGateway\Common\PhoneNumberValidator\PhoneNumberGatewayValidator;
 use JBBx2016\SMSGateway\Common\PhoneNumberValidator\PhoneNumberLengthCondition;
 use JBBx2016\SMSGateway\Common\PhoneNumberValidator\PhoneNumberStartsWithCondition;
 use JBBx2016\SMSGateway\Common\Sender;
-use JBBx2016\SMSGateway\Payloads\SMS;
+use JBBx2016\SMSGateway\Payloads\SMSPayload;
 
 class EurobateGateway extends Gateway
 {
@@ -46,11 +48,14 @@ class EurobateGateway extends Gateway
 
     /**
      * @param Sender $Sender
-     * @param SMS $SMS
+     * @param Payload $Payload
      * @return GatewaySendMessageResponse
+     * @throws OnlySMSPayloadAllowedException
      */
-    public function SendMessage(Sender $Sender, SMS $SMS)
+    public function SendMessage(Sender $Sender, Payload $Payload)
     {
+        if (!($Payload instanceof SMSPayload))
+            throw new OnlySMSPayloadAllowedException($Payload);
 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, 'https://cpa.eurobate.com/push2.php');
@@ -62,8 +67,8 @@ class EurobateGateway extends Gateway
             'bruker' => $this->UserName,
             'passord' => $this->Password,
             'avsender' => iconv("UTF-8", "ISO-8859-1", $Sender->GetString()),
-            'til' => $SMS->GetPhoneNumber()->PhoneNumber,
-            'melding' => iconv("UTF-8", "ISO-8859-1", $SMS->GetText()),
+            'til' => $Payload->GetPhoneNumber()->PhoneNumber,
+            'melding' => iconv("UTF-8", "ISO-8859-1", $Payload->GetText()),
             'batch' => 0,
             'land' => 47
         ));
