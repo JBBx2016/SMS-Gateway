@@ -18,9 +18,25 @@ class SMS
     /** @var  string */
     protected $Text;
 
-    public function __construct(PhoneNumber $phoneNumber, $text)
+    public function __construct(PhoneNumber $phoneNumber, $Text)
     {
         $this->PhoneNumber = $phoneNumber;
-        $this->Text = $text;
+        $this->Text = $Text;
+    }
+
+    /**
+     * @return PhoneNumber
+     */
+    public function GetPhoneNumber()
+    {
+        return $this->PhoneNumber;
+    }
+
+    /**
+     * @return string
+     */
+    public function GetText()
+    {
+        return $this->Text;
     }
 }

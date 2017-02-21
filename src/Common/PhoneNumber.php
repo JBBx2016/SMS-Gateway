@@ -12,5 +12,15 @@ namespace JBBx2016\SMSGateway\Common;
 
 class PhoneNumber
 {
+    /** @var  string */
+    public $CountryCode;
 
+    /** @var  string */
+    public $PhoneNumber;
+
+    public function __construct($CountryCode, $PhoneNumber)
+    {
+        $this->CountryCode = $CountryCode;
+        $this->PhoneNumber = $PhoneNumber;
+    }
 }
