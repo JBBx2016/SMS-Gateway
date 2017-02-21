@@ -6,10 +6,11 @@
  * Time: 17.58
  */
 
-namespace JBBx2016\SMSGateway\Common\PhoneNumberValidator;
+namespace JBBx2016\SMSGateway\Common\PhoneNumberValidator\Conditions;
 
 
 use JBBx2016\SMSGateway\Common\PhoneNumber;
+use JBBx2016\SMSGateway\Common\PhoneNumberValidator\Condition;
 
 class PhoneNumberStartsWithCondition extends Condition
 {

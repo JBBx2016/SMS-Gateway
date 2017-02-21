@@ -14,10 +14,10 @@ use JBBx2016\SMSGateway\Common\Gateway\Gateway;
 use JBBx2016\SMSGateway\Common\Gateway\GatewaySendMessageResponse;
 use JBBx2016\SMSGateway\Common\Payload;
 use JBBx2016\SMSGateway\Common\PhoneNumber;
-use JBBx2016\SMSGateway\Common\PhoneNumberValidator\CountryCodeCondition;
+use JBBx2016\SMSGateway\Common\PhoneNumberValidator\Conditions\CountryCodeCondition;
+use JBBx2016\SMSGateway\Common\PhoneNumberValidator\Conditions\PhoneNumberLengthCondition;
+use JBBx2016\SMSGateway\Common\PhoneNumberValidator\Conditions\PhoneNumberStartsWithCondition;
 use JBBx2016\SMSGateway\Common\PhoneNumberValidator\PhoneNumberGatewayValidator;
-use JBBx2016\SMSGateway\Common\PhoneNumberValidator\PhoneNumberLengthCondition;
-use JBBx2016\SMSGateway\Common\PhoneNumberValidator\PhoneNumberStartsWithCondition;
 use JBBx2016\SMSGateway\Common\Sender;
 use JBBx2016\SMSGateway\Payloads\SMSPayload;
 
