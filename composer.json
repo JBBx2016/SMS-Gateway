@@ -1,7 +1,7 @@
 {
   "name": "jbbx2016/sms-gateway",
   "description": "SMS Gateway used in SchoolLink project",
-  "minimum-stability": "dev",
+  "minimum-stability": "stable",
   "license": "proprietary",
   "authors": [
     {
