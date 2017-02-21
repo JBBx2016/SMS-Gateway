@@ -1,8 +1,8 @@
 {
   "name": "jbbx2016/sms-gateway",
-  "description": "SMS Gateway used in SchoolLink project",
+  "description": "SMS Gateway to interface with Eurobate",
   "minimum-stability": "stable",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "license": "Apache-2.0",
   "authors": [
     {
@@ -13,5 +13,8 @@
     "psr-4": {
       "JBBx2016\\SMSGateway\\": "src/"
     }
+  },
+  "require": {
+    "php": ">=5.3"
   }
 }

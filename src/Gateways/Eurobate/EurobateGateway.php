@@ -9,6 +9,7 @@
 namespace JBBx2016\SMSGateway\Gateways\Eurobate;
 
 use JBBx2016\SMSGateway\Common\CountryCodes;
+use JBBx2016\SMSGateway\Common\Exceptions\GatewayEndpointConnectionFailedException;
 use JBBx2016\SMSGateway\Common\Exceptions\OnlySMSPayloadAllowedException;
 use JBBx2016\SMSGateway\Common\Gateway\Gateway;
 use JBBx2016\SMSGateway\Common\Gateway\GatewaySendMessageResponse;
@@ -30,12 +31,21 @@ class EurobateGateway extends Gateway
     /** @var  string */
     private $Password;
 
+    /**
+     * EurobateGateway constructor.
+     * @param string $UserName
+     * @param string $Password
+     */
     public function __construct($UserName, $Password)
     {
         $this->UserName = $UserName;
         $this->Password = $Password;
     }
 
+    /**
+     * @param PhoneNumber $PhoneNumber
+     * @return bool
+     */
     public function CanProcessPhoneNumber(PhoneNumber $PhoneNumber)
     {
         return PhoneNumberGatewayValidator::Validate($PhoneNumber, array(
@@ -51,6 +61,7 @@ class EurobateGateway extends Gateway
      * @param Sender $Sender
      * @param Payload $Payload
      * @return GatewaySendMessageResponse
+     * @throws GatewayEndpointConnectionFailedException
      * @throws IPNotAuthorizedEurobateException
      * @throws OnlySMSPayloadAllowedException
      */
@@ -78,6 +89,8 @@ class EurobateGateway extends Gateway
         curl_close($curl);
 
 
+        if (curl_errno($curl) !== 0)
+            throw new GatewayEndpointConnectionFailedException(curl_error($curl));
 
         if (strpos($result, "IP ikke tillatt") !== false)
             throw new IPNotAuthorizedEurobateException();

@@ -12,10 +12,13 @@ namespace JBBx2016\SMSGateway\Common\Gateway;
 use JBBx2016\SMSGateway\Common\Payload;
 use JBBx2016\SMSGateway\Common\PhoneNumber;
 use JBBx2016\SMSGateway\Common\Sender;
-use JBBx2016\SMSGateway\Payloads\SMSPayload;
 
 abstract class Gateway
 {
+    /**
+     * @param PhoneNumber $PhoneNumber
+     * @return bool
+     */
     abstract public function CanProcessPhoneNumber(PhoneNumber $PhoneNumber);
 
     /**
