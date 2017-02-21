@@ -1,5 +1,5 @@
 {
-  "name": "JBBx2016/SMS-Gateway",
+  "name": "jbbx2016/sms-gateway",
   "description": "SMS Gateway used in SchoolLink project",
   "minimum-stability": "stable",
   "license": "Apache-2.0",
