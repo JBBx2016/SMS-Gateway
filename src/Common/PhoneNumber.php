@@ -23,4 +23,9 @@ class PhoneNumber
         $this->CountryCode = $CountryCode;
         $this->PhoneNumber = $PhoneNumber;
     }
+
+    public function GetDebugString()
+    {
+        return "CountryCode='{$this->CountryCode}', PhoneNumber='{$this->PhoneNumber}'";
+    }
 }

@@ -37,7 +37,7 @@ class SMSGatewayApi
         $Gateways = $this->GetGatewaysThatCanProcessSMS($SMS->GetPhoneNumber());
 
         if (empty($Gateways))
-            throw new NoGatewayFoundException();
+            throw new NoGatewayFoundException($SMS->GetPhoneNumber()->GetDebugString());
 
         $FirstGateway = $Gateways[0];
         return $FirstGateway->SendMessage($Sender, $SMS);
