@@ -9,6 +9,7 @@
 namespace JBBx2016\SMSGateway\Gateways\Eurobate;
 
 use JBBx2016\SMSGateway\Common\CountryCodes;
+use JBBx2016\SMSGateway\Common\Exceptions\GatewayAuthorizationException;
 use JBBx2016\SMSGateway\Common\Exceptions\GatewayEndpointConnectionFailedException;
 use JBBx2016\SMSGateway\Common\Exceptions\OnlySMSPayloadAllowedException;
 use JBBx2016\SMSGateway\Common\Gateway\Gateway;
@@ -30,6 +31,9 @@ class EurobateGateway extends Gateway
 
     /** @var  string */
     private $Password;
+
+    /** @var  string */
+    private $DeliveryReportStatusEndpointURL;
 
     /**
      * EurobateGateway constructor.
@@ -61,6 +65,7 @@ class EurobateGateway extends Gateway
      * @param Sender $Sender
      * @param Payload $Payload
      * @return GatewaySendMessageResponse
+     * @throws GatewayAuthorizationException
      * @throws GatewayEndpointConnectionFailedException
      * @throws IPNotAuthorizedEurobateException
      * @throws OnlySMSPayloadAllowedException
@@ -70,13 +75,7 @@ class EurobateGateway extends Gateway
         if (!($Payload instanceof SMSPayload))
             throw new OnlySMSPayloadAllowedException($Payload);
 
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, 'https://cpa.eurobate.com/push2.php');
-        curl_setopt($curl, CURLOPT_HEADER, 0);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-
-        curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, array(
+        $Data = array(
             'bruker' => $this->UserName,
             'passord' => $this->Password,
             'avsender' => iconv("UTF-8", "ISO-8859-1", $Sender->GetString()),
@@ -84,18 +83,42 @@ class EurobateGateway extends Gateway
             'melding' => iconv("UTF-8", "ISO-8859-1", $Payload->GetText()),
             'batch' => 0,
             'land' => 47
-        ));
+        );
+
+        if ($this->DeliveryReportStatusEndpointURL)
+            $Data['dlrurl'] = $this->DeliveryReportStatusEndpointURL;
+
+
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, 'https://cpa.eurobate.com/push2.php');
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $Data);
         $result = curl_exec($curl);
-        curl_close($curl);
 
 
         if (curl_errno($curl) !== 0)
             throw new GatewayEndpointConnectionFailedException(curl_error($curl));
 
+        curl_close($curl);
+
         if (strpos($result, "IP ikke tillatt") !== false)
             throw new IPNotAuthorizedEurobateException();
 
+        if (strpos($result, "Feil brukernavn og/eller passord") !== false)
+            throw new GatewayAuthorizationException();
+
 
         return new EurobateSendMessageResponse($result);
+    }
+
+    /**
+     * @param string $URL
+     */
+    public function SetDeliveryReportStatusEndpoint($URL)
+    {
+        $this->DeliveryReportStatusEndpointURL = $URL;
     }
 }

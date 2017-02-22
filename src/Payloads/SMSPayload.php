@@ -16,6 +16,12 @@ class SMSPayload extends Payload
     /** @var  string */
     protected $Text;
 
+    /**
+     * SMSPayload constructor. $Text should be provided in UTF-8
+     *
+     * @param PhoneNumber $phoneNumber
+     * @param string $Text
+     */
     public function __construct(PhoneNumber $phoneNumber, $Text)
     {
         $this->PhoneNumber = $phoneNumber;
