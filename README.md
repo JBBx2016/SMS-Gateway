@@ -46,10 +46,11 @@ try {
 ## Send SMS from number
 ```
 <?php
+
 use JBBx2016\SMSGateway\Common\CountryCodes;
 use JBBx2016\SMSGateway\Common\PhoneNumber;
 use JBBx2016\SMSGateway\Payloads\SMSPayload;
-use JBBx2016\SMSGateway\Senders\TextSender;
+use JBBx2016\SMSGateway\Senders\NumberSender;
 
 $SMSGatewayApi->SendMessage(
     new NumberSender('203098765432'),
