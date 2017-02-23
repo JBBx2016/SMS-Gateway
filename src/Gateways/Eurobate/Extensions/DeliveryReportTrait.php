@@ -22,8 +22,8 @@ trait DeliveryReportTrait
 
         'sendt' => Status::Sent,
         'billed' => Status::Billed,
-        'acked' => Status::OperatorAcknowledged,
-        'rejected' => Status::OperatorRejected,
+        'acked' => Status::Acknowledged,
+        'rejected' => Status::Rejected,
         'buffered' => Status::Buffered,
         'delivered' => Status::Delivered,
         'failed' => Status::Failed

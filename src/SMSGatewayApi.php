@@ -68,4 +68,19 @@ class SMSGatewayApi
     {
         return $this->Gateways;
     }
+
+    /**
+     * @param string $GatewayClass
+     * @return Gateway
+     */
+    public function GetGateway($GatewayClass)
+    {
+        foreach ($this->Gateways as $Gateway) {
+            if (get_class($Gateway) === $GatewayClass) {
+                return $Gateway;
+            }
+        }
+
+        return null;
+    }
 }

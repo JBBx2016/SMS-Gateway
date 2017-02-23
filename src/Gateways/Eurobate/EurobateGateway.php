@@ -22,10 +22,13 @@ use JBBx2016\SMSGateway\Common\PhoneNumberValidator\Conditions\PhoneNumberStarts
 use JBBx2016\SMSGateway\Common\PhoneNumberValidator\PhoneNumberGatewayValidator;
 use JBBx2016\SMSGateway\Common\Sender;
 use JBBx2016\SMSGateway\Gateways\Eurobate\Exceptions\IPNotAuthorizedEurobateException;
+use JBBx2016\SMSGateway\Gateways\Eurobate\Extensions\DeliveryReportTrait;
 use JBBx2016\SMSGateway\Payloads\SMSPayload;
 
 class EurobateGateway extends Gateway
 {
+    use DeliveryReportTrait;
+
     /** @var  string */
     private $UserName;
 

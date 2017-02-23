@@ -24,12 +24,12 @@ class Status
     /**
      * Message picked up and accepted by operator’s SMSC. Awaiting final delivered/failed status.
      */
-    const OperatorAcknowledged = 'OperatorAcknowledged';
+    const Acknowledged = 'Acknowledged';
 
     /**
      * Message sendt from Eurobate and was but was rejected by operator’s SMSC. Usually due to wrong phonenumber format or missing information.
      */
-    const OperatorRejected = 'OperatorAcknowledged';
+    const Rejected = 'Rejected';
 
     /**
      * Message was tried sendt to the phone but could not be delivered, usually because the phone was turned off. OperatorStatus will retry until timeout, whereas the final status will be set to delivered or failed.
