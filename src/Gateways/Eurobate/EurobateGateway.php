@@ -33,7 +33,10 @@ class EurobateGateway extends Gateway
     private $Password;
 
     /** @var  string */
-    private $DeliveryReportStatusEndpointURL;
+    private $DeliveryReportStatusEndpoint_URL;
+
+    /** @var  string */
+    private $DeliveryReportStatusEndpoint_Secret;
 
     /**
      * EurobateGateway constructor.
@@ -85,8 +88,8 @@ class EurobateGateway extends Gateway
             'land' => 47
         );
 
-        if ($this->DeliveryReportStatusEndpointURL)
-            $Data['dlrurl'] = $this->DeliveryReportStatusEndpointURL;
+        if ($this->DeliveryReportStatusEndpoint_URL)
+            $Data['dlrurl'] = $this->DeliveryReportStatusEndpoint_URL;
 
 
         $curl = curl_init();
@@ -116,9 +119,16 @@ class EurobateGateway extends Gateway
 
     /**
      * @param string $URL
+     * @param string $Secret
      */
-    public function SetDeliveryReportStatusEndpoint($URL)
+    public function SetDeliveryReportStatusEndpoint($URL, $Secret)
     {
-        $this->DeliveryReportStatusEndpointURL = $URL;
+        $this->DeliveryReportStatusEndpoint_URL = $URL;
+        $this->DeliveryReportStatusEndpoint_Secret = $Secret;
+    }
+
+    public function ValidateSecret($Secret)
+    {
+        return $this->DeliveryReportStatusEndpoint_Secret === $Secret;
     }
 }

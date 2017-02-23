@@ -6,7 +6,7 @@
  * Time: 19.01
  */
 
-namespace JBBx2016\SMSGateway\Gateways\Eurobate;
+namespace JBBx2016\SMSGateway\Gateways\Eurobate\Exceptions;
 
 
 use JBBx2016\SMSGateway\Common\Exceptions\Exception;
