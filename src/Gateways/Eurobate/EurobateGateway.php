@@ -62,7 +62,7 @@ class EurobateGateway extends Gateway
 
             new CountryCodeCondition(array(CountryCodes::Norway)),
             new PhoneNumberLengthCondition(8),
-            new PhoneNumberStartsWithCondition('9')
+            new PhoneNumberStartsWithCondition(array('4', '9'))
 
         ));
     }

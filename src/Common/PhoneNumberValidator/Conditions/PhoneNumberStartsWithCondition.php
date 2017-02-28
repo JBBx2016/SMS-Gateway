@@ -14,12 +14,12 @@ use JBBx2016\SMSGateway\Common\PhoneNumberValidator\Condition;
 
 class PhoneNumberStartsWithCondition extends Condition
 {
-    /** @var string */
+    /** @var string[] */
     public $StartsWith;
 
     public function __construct($StartsWith)
     {
-        $this->StartsWith = $StartsWith;
+        $this->StartsWith = is_array($StartsWith) ? $StartsWith : array($StartsWith);
     }
 
     /**
@@ -28,6 +28,10 @@ class PhoneNumberStartsWithCondition extends Condition
      */
     public function PhoneNumberMatch(PhoneNumber $PhoneNumber)
     {
-        return substr($PhoneNumber->PhoneNumber, 0, strlen($this->StartsWith)) === $this->StartsWith;
+        foreach ($this->StartsWith as $StartWith) {
+            if (substr($PhoneNumber->PhoneNumber, 0, strlen($StartWith)) === $StartWith)
+                return true;
+        }
+        return false;
     }
 }
