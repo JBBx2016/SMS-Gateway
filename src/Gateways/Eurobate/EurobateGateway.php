@@ -92,7 +92,7 @@ class EurobateGateway extends Gateway
         );
 
         if ($this->DeliveryReportStatusEndpoint_URL)
-            $Data['dlrurl'] = $this->DeliveryReportStatusEndpoint_URL;
+            $Data['dlrurl'] = $this->DeliveryReportStatusEndpoint_URL . '&Secret=' . urlencode($this->DeliveryReportStatusEndpoint_Secret);
 
 
         $curl = curl_init();
