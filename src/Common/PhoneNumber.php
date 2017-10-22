@@ -28,4 +28,26 @@ class PhoneNumber
     {
         return "CountryCode='{$this->CountryCode}', PhoneNumber='{$this->PhoneNumber}'";
     }
+
+    public function getNumber()
+    {
+        return '+' . $this->getCountryCode() . $this->getPhoneNumber();
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountryCode(): string
+    {
+        return $this->CountryCode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhoneNumber(): string
+    {
+        return $this->PhoneNumber;
+    }
+
 }
