@@ -84,9 +84,9 @@ class EurobateGateway extends Gateway
         $Data = array(
             'bruker' => $this->UserName,
             'passord' => $this->Password,
-            'avsender' => iconv("UTF-8", "ISO-8859-1", $Sender->GetString()),
+            'avsender' => iconv("UTF-8", "ISO-8859-1//TRANSLIT", $Sender->GetString()),
             'til' => $Payload->GetPhoneNumber()->PhoneNumber,
-            'melding' => iconv("UTF-8", "ISO-8859-1", $Payload->GetText()),
+            'melding' => iconv("UTF-8", "ISO-8859-1//TRANSLIT", $Payload->GetText()),
             'batch' => 0,
             'land' => 47
         );
