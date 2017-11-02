@@ -29,6 +29,13 @@ class TwilioGateway extends Gateway
     /** @var  Client */
     private $client;
 
+    /** @var  bool */
+    private $ignoreSender = false;
+
+    /** @var Sender[] */
+    private $senders = [];
+
+
     public function __construct(string $sid, string $token)
     {
         $this->sid = $sid;
@@ -55,10 +62,16 @@ class TwilioGateway extends Gateway
         if (!($Payload instanceof SMSPayload))
             throw new OnlySMSPayloadAllowedException();
 
+        $from = $Sender->GetString();
+
+        if ($this->ignoreSender) {
+            $from = $this->senders[0]->GetString();
+        }
+
         $response = $this->getClient()->messages->create(
             $Payload->GetPhoneNumber()->getNumber(),
             [
-                'from' => $Sender->GetString(),
+                'from' => $from,
                 'body' => $Payload->GetText()
             ]
         );
@@ -71,5 +84,25 @@ class TwilioGateway extends Gateway
         if ($this->client === null)
             $this->client = new Client($this->sid, $this->token);
         return $this->client;
+    }
+
+    /**
+     * @param Sender[] $senders
+     * @return TwilioGateway
+     */
+    public function setSenders(array $senders): TwilioGateway
+    {
+        $this->senders = $senders;
+        return $this;
+    }
+
+    /**
+     * @param bool $ignoreSender
+     * @return TwilioGateway
+     */
+    public function setIgnoreSender(bool $ignoreSender): TwilioGateway
+    {
+        $this->ignoreSender = $ignoreSender;
+        return $this;
     }
 }
