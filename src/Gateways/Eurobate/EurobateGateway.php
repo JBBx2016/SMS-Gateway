@@ -81,12 +81,20 @@ class EurobateGateway extends Gateway
         if (!($Payload instanceof SMSPayload))
             throw new OnlySMSPayloadAllowedException($Payload);
 
+        $message = $Payload->GetText();
+
+        // REPLACE NON-BREAK SPACE WITH REGULAR SPACE
+        $message = preg_replace('/\xc2\xa0/', ' ', $message);
+
+        $senderName = iconv("UTF-8", "ISO-8859-1//TRANSLIT", $Sender->GetString());
+        $message = iconv("UTF-8", "ISO-8859-1//TRANSLIT", $message);
+
         $Data = array(
             'bruker' => $this->UserName,
             'passord' => $this->Password,
-            'avsender' => iconv("UTF-8", "ISO-8859-1//TRANSLIT", $Sender->GetString()),
+            'avsender' => $senderName,
             'til' => $Payload->GetPhoneNumber()->PhoneNumber,
-            'melding' => iconv("UTF-8", "ISO-8859-1//TRANSLIT", $Payload->GetText()),
+            'melding' => $message,
             'batch' => 0,
             'land' => 47
         );
