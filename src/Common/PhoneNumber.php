@@ -10,6 +10,9 @@
 
 namespace JBBx2016\SMSGateway\Common;
 
+use libphonenumber\NumberParseException;
+use libphonenumber\PhoneNumberUtil;
+
 class PhoneNumber
 {
     /** @var  string */
@@ -37,7 +40,7 @@ class PhoneNumber
     /**
      * @return string
      */
-    public function getCountryCode(): string
+    public function getCountryCode()
     {
         return $this->CountryCode;
     }
@@ -45,9 +48,17 @@ class PhoneNumber
     /**
      * @return string
      */
-    public function getPhoneNumber(): string
+    public function getPhoneNumber()
     {
         return $this->PhoneNumber;
     }
 
+    /**
+     * @return \libphonenumber\PhoneNumber
+     * @throws NumberParseException
+     */
+    public function toLibPhoneNumber()
+    {
+        return PhoneNumberUtil::getInstance()->parse('+' . $this->getCountryCode() . $this->getNumber());
+    }
 }
