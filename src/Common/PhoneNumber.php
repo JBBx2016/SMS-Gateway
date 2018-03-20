@@ -59,6 +59,6 @@ class PhoneNumber
      */
     public function toLibPhoneNumber()
     {
-        return PhoneNumberUtil::getInstance()->parse('+' . $this->getCountryCode() . $this->getNumber());
+        return PhoneNumberUtil::getInstance()->parse($this->getNumber());
     }
 }
