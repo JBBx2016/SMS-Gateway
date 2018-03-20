@@ -32,6 +32,6 @@ class CountryCodeCondition extends Condition
      */
     public function PhoneNumberMatch(PhoneNumber $PhoneNumber)
     {
-        return in_array($PhoneNumber->CountryCode, $this->CountryCodes, true);
+        return in_array((string)$PhoneNumber->CountryCode, array_map('strval', $this->CountryCodes), true);
     }
 }
