@@ -8,7 +8,6 @@
 
 namespace JBBx2016\SMSGateway\Gateways\Eurobate;
 
-use JBBx2016\SMSGateway\Common\CountryCodes;
 use JBBx2016\SMSGateway\Common\Exceptions\GatewayAuthorizationException;
 use JBBx2016\SMSGateway\Common\Exceptions\GatewayEndpointConnectionFailedException;
 use JBBx2016\SMSGateway\Common\Exceptions\OnlySMSPayloadAllowedException;
@@ -16,14 +15,13 @@ use JBBx2016\SMSGateway\Common\Gateway\Gateway;
 use JBBx2016\SMSGateway\Common\Gateway\GatewaySendMessageResponse;
 use JBBx2016\SMSGateway\Common\Payload;
 use JBBx2016\SMSGateway\Common\PhoneNumber;
-use JBBx2016\SMSGateway\Common\PhoneNumberValidator\Conditions\CountryCodeCondition;
-use JBBx2016\SMSGateway\Common\PhoneNumberValidator\Conditions\PhoneNumberLengthCondition;
-use JBBx2016\SMSGateway\Common\PhoneNumberValidator\Conditions\PhoneNumberStartsWithCondition;
-use JBBx2016\SMSGateway\Common\PhoneNumberValidator\PhoneNumberGatewayValidator;
 use JBBx2016\SMSGateway\Common\Sender;
 use JBBx2016\SMSGateway\Gateways\Eurobate\Exceptions\IPNotAuthorizedEurobateException;
 use JBBx2016\SMSGateway\Gateways\Eurobate\Extensions\DeliveryReportTrait;
 use JBBx2016\SMSGateway\Payloads\SMSPayload;
+use libphonenumber\NumberParseException;
+use libphonenumber\PhoneNumberFormat;
+use libphonenumber\PhoneNumberUtil;
 
 class EurobateGateway extends Gateway
 {
@@ -58,13 +56,11 @@ class EurobateGateway extends Gateway
      */
     public function CanProcessPhoneNumber(PhoneNumber $PhoneNumber)
     {
-        return PhoneNumberGatewayValidator::Validate($PhoneNumber, array(
-
-            new CountryCodeCondition(array(CountryCodes::Norway)),
-            new PhoneNumberLengthCondition(8),
-            new PhoneNumberStartsWithCondition(array('4', '9'))
-
-        ));
+        try {
+            return PhoneNumberUtil::getInstance()->isValidNumber($PhoneNumber->toLibPhoneNumber());
+        } catch (NumberParseException $e) {
+            return false;
+        }
     }
 
     /**
@@ -75,6 +71,7 @@ class EurobateGateway extends Gateway
      * @throws GatewayEndpointConnectionFailedException
      * @throws IPNotAuthorizedEurobateException
      * @throws OnlySMSPayloadAllowedException
+     * @throws NumberParseException
      */
     public function SendMessage(Sender $Sender, Payload $Payload)
     {
@@ -89,14 +86,16 @@ class EurobateGateway extends Gateway
         $senderName = iconv("UTF-8", "ISO-8859-1//TRANSLIT", $Sender->GetString());
         $message = iconv("UTF-8", "ISO-8859-1//TRANSLIT", $message);
 
+        $phoneNumber = $Payload->GetPhoneNumber()->toLibPhoneNumber();
+
         $Data = array(
             'bruker' => $this->UserName,
             'passord' => $this->Password,
             'avsender' => $senderName,
-            'til' => $Payload->GetPhoneNumber()->PhoneNumber,
+            'til' => $phoneNumber->getNationalNumber(),
             'melding' => $message,
             'batch' => 0,
-            'land' => 47
+            'land' => $phoneNumber->getCountryCode(),
         );
 
         if ($this->DeliveryReportStatusEndpoint_URL)
