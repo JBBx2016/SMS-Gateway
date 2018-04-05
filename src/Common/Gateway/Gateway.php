@@ -27,4 +27,9 @@ abstract class Gateway
      * @return GatewaySendMessageResponse
      */
     abstract public function SendMessage(Sender $Sender, Payload $Payload);
+
+    /**
+     * @return string
+     */
+    abstract public function toString();
 }

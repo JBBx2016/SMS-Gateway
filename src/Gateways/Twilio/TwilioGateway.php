@@ -105,4 +105,12 @@ class TwilioGateway extends Gateway
         $this->ignoreSender = $ignoreSender;
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function toString()
+    {
+        return 'Twilio';
+    }
 }

@@ -90,4 +90,12 @@ class PSWinComGateway extends Gateway
             throw new GatewayEndpointConnectionFailedException($response->getBody());
         }
     }
+
+    /**
+     * @return string
+     */
+    public function toString()
+    {
+        return 'PSWinComGateway[username="' . $this->username . '", password="' . $this->password . '"]';
+    }
 }

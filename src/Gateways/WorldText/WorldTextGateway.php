@@ -76,4 +76,12 @@ class WorldTextGateway extends Gateway
 
         return new WorldTextSendMessageResponse($info);
     }
+
+    /**
+     * @return string
+     */
+    public function toString()
+    {
+        return 'WorldText';
+    }
 }

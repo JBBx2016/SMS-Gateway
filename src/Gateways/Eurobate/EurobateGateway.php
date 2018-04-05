@@ -20,7 +20,6 @@ use JBBx2016\SMSGateway\Gateways\Eurobate\Exceptions\IPNotAuthorizedEurobateExce
 use JBBx2016\SMSGateway\Gateways\Eurobate\Extensions\DeliveryReportTrait;
 use JBBx2016\SMSGateway\Payloads\SMSPayload;
 use libphonenumber\NumberParseException;
-use libphonenumber\PhoneNumberFormat;
 use libphonenumber\PhoneNumberUtil;
 
 class EurobateGateway extends Gateway
@@ -140,5 +139,13 @@ class EurobateGateway extends Gateway
     public function ValidateSecret($Secret)
     {
         return $this->DeliveryReportStatusEndpoint_Secret === $Secret;
+    }
+
+    /**
+     * @return string
+     */
+    public function toString()
+    {
+        return 'EurobateGateway[username="' . $this->UserName . '", password="' . $this->Password . '"]';
     }
 }
