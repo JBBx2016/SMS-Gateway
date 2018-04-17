@@ -48,7 +48,7 @@ class SMSGatewayApi
      * @param PhoneNumber $PhoneNumber
      * @return Gateway[]
      */
-    private function GetGatewaysThatCanProcessSMS(PhoneNumber $PhoneNumber)
+    public function GetGatewaysThatCanProcessSMS(PhoneNumber $PhoneNumber)
     {
         $Gateways = array();
 
@@ -67,6 +67,21 @@ class SMSGatewayApi
     private function GetGateways()
     {
         return $this->Gateways;
+    }
+
+    /**
+     * @param PhoneNumber $PhoneNumber
+     * @return Gateway|null
+     */
+    public function GetGatewayThatCanProcessSMS(PhoneNumber $PhoneNumber)
+    {
+        foreach ($this->GetGateways() as $Gateway) {
+            if ($Gateway->CanProcessPhoneNumber($PhoneNumber)) {
+                return $Gateway;
+            }
+        }
+
+        return null;
     }
 
     /**
