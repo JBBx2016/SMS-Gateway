@@ -20,6 +20,7 @@ use JBBx2016\SMSGateway\Common\Sender;
 use JBBx2016\SMSGateway\Payloads\SMSPayload;
 use libphonenumber\NumberParseException;
 use libphonenumber\PhoneNumberUtil;
+use function iconv;
 
 class PSWinComGateway extends Gateway
 {
@@ -78,8 +79,8 @@ class PSWinComGateway extends Gateway
                         'USER' => $this->username,
                         'PW' => $this->password,
                         'RCV' => $Payload->GetPhoneNumber()->getCountryCode() . $Payload->GetPhoneNumber()->getPhoneNumber(),
-                        'SND' => $Sender->GetString(),
-                        'TXT' => $Payload->GetText(),
+                        'SND' => iconv("UTF-8", "ISO-8859-1//TRANSLIT", $Sender->GetString()),
+                        'TXT' => iconv("UTF-8", "ISO-8859-1//TRANSLIT", $Payload->GetText()),
                     ]
                 ]
             );
