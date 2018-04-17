@@ -74,11 +74,13 @@ class PSWinComGateway extends Gateway
                 'GET',
                 '',
                 [
-                    'USER' => $this->username,
-                    'PW' => $this->password,
-                    'RCV' => $Payload->GetPhoneNumber()->getCountryCode() . $Payload->GetPhoneNumber()->getPhoneNumber(),
-                    'SND' => $Sender->GetString(),
-                    'TXT' => $Payload->GetText(),
+                    'query' => [
+                        'USER' => $this->username,
+                        'PW' => $this->password,
+                        'RCV' => $Payload->GetPhoneNumber()->getCountryCode() . $Payload->GetPhoneNumber()->getPhoneNumber(),
+                        'SND' => $Sender->GetString(),
+                        'TXT' => $Payload->GetText(),
+                    ]
                 ]
             );
         } catch (GuzzleException $e) {
