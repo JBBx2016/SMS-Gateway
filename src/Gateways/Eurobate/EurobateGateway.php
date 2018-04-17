@@ -148,4 +148,20 @@ class EurobateGateway extends Gateway
     {
         return 'EurobateGateway[username="' . $this->UserName . '", password="' . $this->Password . '"]';
     }
+
+    /**
+     * @return string|int|null
+     */
+    public function getAccountId()
+    {
+        return $this->UserName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGatewayId()
+    {
+        return 'eurobate';
+    }
 }

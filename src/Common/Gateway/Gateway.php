@@ -32,4 +32,14 @@ abstract class Gateway
      * @return string
      */
     abstract public function toString();
+
+    /**
+     * @return mixed
+     */
+    abstract public function getGatewayId();
+
+    /**
+     * @return string|int|null
+     */
+    abstract public function getAccountId();
 }

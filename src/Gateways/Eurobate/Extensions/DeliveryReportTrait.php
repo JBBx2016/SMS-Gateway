@@ -30,6 +30,13 @@ trait DeliveryReportTrait
 
     );
 
+    /**
+     * @param $Status
+     * @param $Operator
+     * @param $OperatorStatusCode
+     * @return DeliveryReport
+     * @throws UnknownStatusDeliveryReportException
+     */
     public function ParseDeliveryReport($Status, $Operator, $OperatorStatusCode)
     {
         if (!array_key_exists($Status, self::$StatusTranslation))

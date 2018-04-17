@@ -16,6 +16,7 @@ use JBBx2016\SMSGateway\Common\Payload;
 use JBBx2016\SMSGateway\Common\PhoneNumber;
 use JBBx2016\SMSGateway\Common\Sender;
 use JBBx2016\SMSGateway\Payloads\SMSPayload;
+use Twilio\Exceptions\ConfigurationException;
 use Twilio\Rest\Client;
 
 class TwilioGateway extends Gateway
@@ -42,6 +43,11 @@ class TwilioGateway extends Gateway
         $this->token = $token;
     }
 
+    public function __sleep()
+    {
+        return ['sid', 'token', 'ignoreSender', 'senders'];
+    }
+
     /**
      * @param PhoneNumber $PhoneNumber
      * @return bool
@@ -56,6 +62,7 @@ class TwilioGateway extends Gateway
      * @param Payload $Payload
      * @return GatewaySendMessageResponse
      * @throws OnlySMSPayloadAllowedException
+     * @throws ConfigurationException
      */
     public function SendMessage(Sender $Sender, Payload $Payload)
     {
@@ -79,6 +86,10 @@ class TwilioGateway extends Gateway
         return new TwilioSendMessageResponse($response);
     }
 
+    /**
+     * @return Client
+     * @throws ConfigurationException
+     */
     public function getClient(): Client
     {
         if ($this->client === null)
@@ -112,5 +123,21 @@ class TwilioGateway extends Gateway
     public function toString()
     {
         return 'Twilio';
+    }
+
+    /**
+     * @return string|int|null
+     */
+    public function getAccountId()
+    {
+        return $this->sid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGatewayId()
+    {
+        return 'twilio';
     }
 }

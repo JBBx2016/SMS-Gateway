@@ -84,4 +84,20 @@ class WorldTextGateway extends Gateway
     {
         return 'WorldText';
     }
+
+    /**
+     * @return string|int|null
+     */
+    public function getAccountId()
+    {
+        return $this->accountId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGatewayId()
+    {
+        return 'worldtext';
+    }
 }

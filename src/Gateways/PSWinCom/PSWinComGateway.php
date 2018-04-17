@@ -98,4 +98,20 @@ class PSWinComGateway extends Gateway
     {
         return 'PSWinComGateway[username="' . $this->username . '", password="' . $this->password . '"]';
     }
+
+    /**
+     * @return string|int|null
+     */
+    public function getAccountId()
+    {
+        return $this->username;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGatewayId()
+    {
+        return 'pswincom';
+    }
 }
