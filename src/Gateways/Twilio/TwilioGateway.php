@@ -36,6 +36,9 @@ class TwilioGateway extends Gateway
     /** @var Sender[] */
     private $senders = [];
 
+    /** @var string|null */
+    private $messagingServiceSid;
+
 
     public function __construct(string $sid, string $token)
     {
@@ -69,19 +72,22 @@ class TwilioGateway extends Gateway
         if (!($Payload instanceof SMSPayload))
             throw new OnlySMSPayloadAllowedException();
 
-        $from = $Sender->GetString();
+        $query = [
+            'body' => $Payload->GetText()
+        ];
 
-        if ($this->ignoreSender) {
-            $from = $this->senders[0]->GetString();
+        if ($this->messagingServiceSid) {
+            $query['messagingServiceSid'] = $this->messagingServiceSid;
+        } else {
+            $query['from'] = $Sender->GetString();
+
+            if ($this->ignoreSender) {
+                $query['from'] = $this->senders[0]->GetString();
+            }
+
         }
 
-        $response = $this->getClient()->messages->create(
-            $Payload->GetPhoneNumber()->getNumber(),
-            [
-                'from' => $from,
-                'body' => $Payload->GetText()
-            ]
-        );
+        $response = $this->getClient()->messages->create($Payload->GetPhoneNumber()->getNumber(), $query);
 
         return new TwilioSendMessageResponse($response);
     }
@@ -139,5 +145,23 @@ class TwilioGateway extends Gateway
     public function getGatewayId()
     {
         return 'twilio';
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getMessagingServiceSid(): string
+    {
+        return $this->messagingServiceSid;
+    }
+
+    /**
+     * @param null|string $messagingServiceSid
+     * @return TwilioGateway
+     */
+    public function setMessagingServiceSid(string $messagingServiceSid): TwilioGateway
+    {
+        $this->messagingServiceSid = $messagingServiceSid;
+        return $this;
     }
 }
